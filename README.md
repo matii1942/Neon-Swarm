@@ -1,7 +1,6 @@
-[README.md](https://github.com/user-attachments/files/32359971/README.md)
 # Neon Swarm
 
-A neon arcade formation shooter in the spirit of **Galaga**, built with React and HTML5 Canvas in a single self-contained file. No build step, no bundler, no dependencies to install — open `index.html` and play.
+A neon arcade formation shooter in the spirit of **Galaga**, built with React and HTML5 Canvas. No build step, no bundler, nothing to install — open `index.html` and play.
 
 ![stack: React 18 + Canvas](https://img.shields.io/badge/stack-React%2018%20%2B%20Canvas-35f0ff)
 
@@ -56,9 +55,18 @@ git remote add origin https://github.com/matii1942/Neon-Swarm.git
 git push -u origin main
 ```
 
-## How it works
+## Project layout
 
-Everything lives in `index.html`:
+```
+index.html        markup, meta tags and the four <script> tags — no build step
+css/style.css     cabinet chrome, neon palette, CRT scanline treatment
+js/game.js        simulation + canvas renderer; publishes window.NeonSwarm
+js/app.js         React shell: marquee, HUD, ship indicator, overlays
+```
+
+`game.js` must load before `app.js` — it exposes `window.NeonSwarm = { Game, loadHigh, W, H }`, which `app.js` consumes. React and ReactDOM come from cdnjs as UMD globals, so there is nothing to install and nothing to compile.
+
+## How it works
 
 - **React 18** (UMD builds from cdnjs, loaded via `<script>` tags) renders the cabinet shell — marquee, HUD, ship indicator, power-up chips, legend and the title / pause / game-over overlays.
 - A plain-JavaScript `Game` class owns the simulation and draws every frame to a `<canvas>` at a fixed 480×640 logical resolution, scaled by CSS and `devicePixelRatio`. It pushes HUD snapshots up to React only when a displayed value actually changes, so React re-renders a few times a second rather than sixty.

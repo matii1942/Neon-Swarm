@@ -1,0 +1,118 @@
+/* Neon Swarm - cabinet chrome, neon palette and CRT treatment.
+   MIT licensed. */
+
+/* standalone reset (kept minimal on purpose) */
+html{-webkit-text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}
+[hidden]{display:none!important}
+
+  :root{
+    --void:#04050e;
+    --deep:#080b1c;
+    --panel:#0d1230;
+    --edge:#1d2a5c;
+    --cyan:#35f0ff;
+    --magenta:#ff2fb0;
+    --amber:#ffc83d;
+    --lime:#7cff4f;
+    --ice:#dff6ff;
+    --dim:#7b8bc7;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(1100px 700px at 50% -10%, #17204d 0%, rgba(8,11,28,0) 60%),
+      radial-gradient(700px 500px at 10% 110%, #2a0f3a 0%, rgba(8,11,28,0) 60%),
+      var(--void);
+    color:var(--ice);
+    font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+    display:flex;
+    justify-content:center;
+    padding-block:22px 28px;
+    padding-left:16px;padding-right:16px;
+  }
+  .cabinet{width:100%;max-width:520px;display:flex;flex-direction:column;gap:14px}
+
+  .marquee{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .wordmark{
+    font-family:"Press Start 2P",ui-monospace,monospace;
+    font-size:clamp(17px,5.2vw,26px);
+    line-height:1.25;
+    margin:0;
+    letter-spacing:.04em;
+    color:var(--ice);
+    text-shadow:0 0 6px rgba(53,240,255,.9),0 0 22px rgba(53,240,255,.45),0 0 44px rgba(255,47,176,.3);
+  }
+  .wordmark em{font-style:normal;color:var(--magenta);text-shadow:0 0 8px rgba(255,47,176,.9),0 0 26px rgba(255,47,176,.5)}
+  .tagline{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin:6px 0 0}
+  .soundbtn{
+    font-family:"Press Start 2P",monospace;font-size:9px;letter-spacing:.06em;
+    background:rgba(13,18,48,.85);color:var(--dim);border:1px solid var(--edge);
+    padding:9px 11px;border-radius:3px;cursor:pointer;
+  }
+  .soundbtn[data-on="1"]{color:var(--cyan);border-color:rgba(53,240,255,.55);box-shadow:0 0 12px rgba(53,240,255,.25) inset}
+  .soundbtn:focus-visible,button:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+
+  .hud{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+    background:linear-gradient(180deg,rgba(18,25,62,.9),rgba(9,12,30,.9));
+    border:1px solid var(--edge);border-radius:4px;padding:11px 13px;
+    font-variant-numeric:tabular-nums;
+  }
+  .hud .k{font-size:8.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+  .hud .v{font-family:"Press Start 2P",monospace;font-size:14px;margin-top:6px;color:var(--ice)}
+  .hud .v.hi{color:var(--amber);text-shadow:0 0 10px rgba(255,200,61,.5)}
+  .hud .v.st{color:var(--lime);text-shadow:0 0 10px rgba(124,255,79,.45)}
+
+  .screenwrap{position:relative;border-radius:8px;padding:9px;
+    background:linear-gradient(180deg,#131a3d,#070a1c);
+    border:1px solid var(--edge);
+    box-shadow:0 0 0 1px rgba(53,240,255,.08),0 22px 60px rgba(4,5,14,.9),0 0 70px rgba(53,240,255,.07);
+  }
+  .screen{position:relative;width:100%;aspect-ratio:3/4;max-width:100%;border-radius:4px;overflow:hidden;background:#04050e}
+  canvas{display:block;width:100%;height:100%;touch-action:none}
+  .crt{position:absolute;inset:0;pointer-events:none;
+    background:
+      repeating-linear-gradient(180deg,rgba(0,0,0,.28) 0 1px,rgba(0,0,0,0) 1px 3px),
+      radial-gradient(120% 100% at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.6) 100%);
+    mix-blend-mode:multiply;
+  }
+  .glare{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(200deg,rgba(255,255,255,.055) 0%,rgba(255,255,255,0) 34%);}
+
+  .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+    text-align:center;padding:24px 18px;background:radial-gradient(60% 60% at 50% 45%,rgba(6,9,24,.82),rgba(4,5,14,.95));
+    backdrop-filter:blur(1.5px);}
+  .otitle{font-family:"Press Start 2P",monospace;font-size:clamp(15px,4.6vw,22px);line-height:1.5;margin:0;
+    text-shadow:0 0 10px rgba(53,240,255,.7),0 0 30px rgba(53,240,255,.35)}
+  .otitle.bad{color:var(--magenta);text-shadow:0 0 10px rgba(255,47,176,.8),0 0 34px rgba(255,47,176,.4)}
+  .osub{font-size:11.5px;line-height:1.7;color:var(--dim);margin:0;max-width:34ch}
+  .osub b{color:var(--ice);font-weight:600}
+  .keys{display:grid;grid-template-columns:auto auto;gap:6px 14px;font-size:10.5px;color:var(--dim);align-items:center}
+  .keys kbd{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--cyan);border:1px solid rgba(53,240,255,.35);
+    border-radius:3px;padding:3px 7px;background:rgba(53,240,255,.07);white-space:nowrap}
+  .cta{font-family:"Press Start 2P",monospace;font-size:11px;letter-spacing:.05em;color:#04050e;
+    background:linear-gradient(180deg,#6ffcff,#1fc6dd);border:0;border-radius:3px;padding:14px 22px;cursor:pointer;
+    box-shadow:0 0 22px rgba(53,240,255,.45),0 4px 0 #0e7d90;}
+  .cta:active{transform:translateY(2px);box-shadow:0 0 18px rgba(53,240,255,.4),0 2px 0 #0e7d90}
+  .cta.alt{background:linear-gradient(180deg,#ff8fd4,#e01f92);box-shadow:0 0 22px rgba(255,47,176,.45),0 4px 0 #8c0f58;color:#fff}
+  .blink{animation:blink 1.15s steps(2,end) infinite}
+  @keyframes blink{50%{opacity:.25}}
+
+  .buffs{display:flex;gap:8px;flex-wrap:wrap;min-height:26px;align-items:center}
+  .buff{font-family:"Press Start 2P",monospace;font-size:8px;letter-spacing:.04em;padding:6px 8px;border-radius:3px;
+    border:1px solid currentColor;position:relative;overflow:hidden}
+  .buff span{position:relative;z-index:1}
+  .buff i{position:absolute;left:0;top:0;bottom:0;background:currentColor;opacity:.18}
+  .buff.rapid{color:var(--amber)}.buff.spread{color:var(--cyan)}.buff.shield{color:var(--lime)}.buff.dual{color:var(--magenta)}
+  .legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:9px 14px;
+    border-top:1px solid var(--edge);padding-top:13px;font-size:10.5px;color:var(--dim)}
+  .legend div{display:flex;gap:8px;align-items:center}
+  .legend b{color:var(--ice);font-weight:600}
+  .swatch{width:12px;height:12px;border-radius:2px;flex:none;box-shadow:0 0 9px currentColor;background:currentColor}
+  .foot{font-size:10px;color:#55639a;letter-spacing:.06em;text-align:center}
+  @media (prefers-reduced-motion:reduce){.blink{animation:none}}
